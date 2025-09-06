@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Background Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1600px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #6e8efb, #a777e3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .resolution-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .app-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .drop-area {
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 50px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .drop-area:hover, .drop-area.dragover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .drop-area i {
+            font-size: 64px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .drop-area p {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            margin: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn i {
+            margin-right: 10px;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .preview-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .preview-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-preview p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .processing-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #6e8efb, #a777e3);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .status-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            border-top: 6px solid #6e8efb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 25px auto;
+            box-shadow: 0 0 20px rgba(110, 142, 251, 0.4);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .background-options {
+            margin-top: 25px;
+        }
+
+        .option-title {
+            color: #fff;
+            margin: 20px 0 15px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .color-option {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-option:hover {
+            transform: scale(1.15);
+        }
+
+        .color-option.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 4px white, 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .gradient-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .gradient-option {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .gradient-option:hover {
+            transform: scale(1.08);
+        }
+
+        .gradient-option.active {
+            transform: scale(1.12);
+            box-shadow: 0 0 0 4px white, 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-bg-upload {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        .quality-info {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* High resolution indicator */
+        .high-res-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 200, 83, 0.2);
+            color: #4caf50;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .drop-area {
+                padding: 30px 15px;
+            }
+            
+            .btn {
+                padding: 14px 26px;
+                font-size: 1rem;
+            }
+            
+            .preview-grid {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Remove Background Pro</div>
+            <p class="tagline">Professional background removal for high-resolution images up to 8K</p>
+            <div class="resolution-badge">Supports 4K & 8K Resolution</div>
+        </div>
+
+        <div class="app-container">
+            <div class="card">
+                <h2>Upload High-Res Image <span class="high-res-indicator"><i class="fas fa-camera"></i> 4K/8K</span></h2>
+                <div class="drop-area" id="dropArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop your high-resolution image here</p>
+                    <p>or</p>
+                    <label for="fileInput" class="btn">
+                        <i class="fas fa-file-image"></i> Choose File
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <p class="quality-info">JPG, PNG, WebP (Max 50MB, up to 8K)</p>
+                </div>
+
+                <div class="processing-section">
+                    <div class="status-text" id="statusText">Ready to process</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="loading-spinner hidden" id="loadingSpinner"></div>
+                    
+                    <button id="processBtn" class="btn" disabled>
+                        <i class="fas fa-magic"></i> Remove Background
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Background Options</h2>
+                
+                <div class="option-title">Solid Colors</div>
+                <div class="color-palette">
+                    <div class="color-option active" style="background: transparent; border: 2px dashed rgba(255,255,255,0.5);" data-color="transparent" title="Transparent"></div>
+                    <div class="color-option" style="background: #ffffff;" data-color="#ffffff" title="White"></div>
+                    <div class="color-option" style="background: #000000;" data-color="#000000" title="Black"></div>
+                    <div class="color-option" style="background: #ff5252;" data-color="#ff5252" title="Red"></div>
+                    <div class="color-option" style="background: #4fc3f7;" data-color="#4fc3f7" title="Blue"></div>
+                    <div class="color-option" style="background: #69f0ae;" data-color="#69f0ae" title="Green"></div>
+                    <div class="color-option" style="background: #ffeb3b;" data-color="#ffeb3b" title="Yellow"></div>
+                </div>
+
+                <div class="option-title">Gradient Backgrounds</div>
+                <div class="gradient-options">
+                    <div class="gradient-option" style="background: linear-gradient(135deg, #6e8efb, #a777e3);" data-gradient="linear-gradient(135deg, #6e8efb, #a777e3)" title="Purple Gradient"></div>
+                    <div class="gradient-option" style="background: linear-gradient(135deg, #ff9a9e, #fad0c4);" data-gradient="linear-gradient(135deg, #ff9a9e, #fad0c4)" title="Pink Gradient"></div>
+                    <div class="gradient-option" style="background: linear-gradient(135deg, #a1c4fd, #c2e9fb);" data-gradient="linear-gradient(135deg, #a1c4fd, #c2e9fb)" title="Blue Gradient"></div>
+                    <div class="gradient-option" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);" data-gradient="linear-gradient(135deg, #ffecd2, #fcb69f)" title="Orange Gradient"></div>
+                </div>
+
+                <div class="custom-bg-upload">
+                    <div class="option-title">Custom Background</div>
+                    <label for="bgFileInput" class="btn">
+                        <i class="fas fa-upload"></i> Upload Background
+                    </label>
+                    <input type="file" id="bgFileInput" accept="image/*">
+                    <p class="quality-info">High-resolution backgrounds supported</p>
+                </div>
+
+                <div class="download-buttons">
+                    <a id="downloadTransparentBtn" class="btn btn-success hidden" download="transparent.png">
+                        <i class="fas fa-download"></i> Transparent PNG
+                    </a>
+                    <a id="downloadCustomBgBtn" class="btn btn-success hidden" download="custom_bg.png">
+                        <i class="fas fa-download"></i> With Background
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-grid">
+            <div class="preview-card">
+                <div class="preview-title">Original Image</div>
+                <div class="image-preview">
+                    <p id="originalPlaceholder">No image uploaded</p>
+                    <img id="originalPreview" class="hidden" alt="Original image">
+                </div>
+                <div class="resolution-info" id="originalResolution"></div>
+            </div>
+
+            <div class="preview-card">
+                <div class="preview-title">Background Removed <span class="high-res-indicator">PNG</span></div>
+                <div class="image-preview">
+                    <p id="processedPlaceholder">Not processed yet</p>
+                    <img id="processedPreview" class="hidden" alt="Processed image">
+                </div>
+                <div class="resolution-info" id="processedResolution"></div>
+            </div>
+
+            <div class="preview-card">
+                <div class="preview-title">With New Background</div>
+                <div class="image-preview">
+                    <p id="customBgPlaceholder">Select a background</p>
+                    <canvas id="customBgPreview" class="hidden" width="800" height="600"></canvas>
+                </div>
+                <div class="resolution-info" id="customBgResolution"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Remove Background Pro | Powered by Remove.bg API | High-Resolution Processing</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const fileInput = document.getElementById('fileInput');
+            const dropArea = document.getElementById('dropArea');
+            const processBtn = document.getElementById('processBtn');
+            const downloadTransparentBtn = document.getElementById('downloadTransparentBtn');
+            const downloadCustomBgBtn = document.getElementById('downloadCustomBgBtn');
+            const originalPreview = document.getElementById('originalPreview');
+            const processedPreview = document.getElementById('processedPreview');
+            const customBgPreview = document.getElementById('customBgPreview');
+            const originalPlaceholder = document.getElementById('originalPlaceholder');
+            const processedPlaceholder = document.getElementById('processedPlaceholder');
+            const customBgPlaceholder = document.getElementById('customBgPlaceholder');
+            const progressBar = document.getElementById('progressBar');
+            const statusText = document.getElementById('statusText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const bgFileInput = document.getElementById('bgFileInput');
+            const colorOptions = document.querySelectorAll('.color-option');
+            const gradientOptions = document.querySelectorAll('.gradient-option');
+            const originalResolution = document.getElementById('originalResolution');
+            const processedResolution = document.getElementById('processedResolution');
+            const customBgResolution = document.getElementById('customBgResolution');
+            
+            // Variables
+            let currentFile = null;
+            let processedImageUrl = null;
+            let selectedBackground = 'transparent';
+            let customBgImage = null;
+            const ctx = customBgPreview.getContext('2d');
+            let originalImageWidth = 0;
+            let originalImageHeight = 0;
+            
+            // Set up event listeners for color options
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    colorOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedBackground = this.dataset.color;
+                    gradientOptions.forEach(o => o.classList.remove('active'));
+                    updateCustomBackground();
+                });
+            });
+            
+            // Set up event listeners for gradient options
+            gradientOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    gradientOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedBackground = this.dataset.gradient;
+                    colorOptions.forEach(o => o.classList.remove('active'));
+                    updateCustomBackground();
+                });
+            });
+            
+            // Set up custom background upload
+            bgFileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            customBgImage = new Image();
+                            customBgImage.onload = function() {
+                                // Deselect other options
+                                colorOptions.forEach(o => o.classList.remove('active'));
+                                gradientOptions.forEach(o => o.classList.remove('active'));
+                                selectedBackground = 'image';
+                                updateCustomBackground();
+                            };
+                            customBgImage.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+            
+            // Drag and drop functionality
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                dropArea.classList.add('dragover');
+            }
+
+            function unhighlight() {
+                dropArea.classList.remove('dragover');
+            }
+
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+
+            fileInput.addEventListener('change', function() {
+                handleFiles(this.files);
+            });
+
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type.match('image.*')) {
+                        if (file.size > 50 * 1024 * 1024) {
+                            alert('File size exceeds 50MB limit. Please choose a smaller file.');
+                            return;
+                        }
+                        
+                        currentFile = file;
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = new Image();
+                            img.onload = function() {
+                                originalImageWidth = img.width;
+                                originalImageHeight = img.height;
+                                
+                                originalPlaceholder.classList.add('hidden');
+                                originalPreview.classList.remove('hidden');
+                                originalPreview.src = e.target.result;
+                                processBtn.disabled = false;
+                                statusText.textContent = 'Ready to process';
+                                progressBar.style.width = '0%';
+                                
+                                // Show resolution info
+                                originalResolution.textContent = `${originalImageWidth} × ${originalImageHeight} pixels`;
+                                originalResolution.classList.add('high-res-indicator');
+                                
+                                // Reset processed preview
+                                processedPreview.classList.add('hidden');
+                                processedPlaceholder.classList.remove('hidden');
+                                downloadTransparentBtn.classList.add('hidden');
+                                processedResolution.textContent = '';
+                                
+                                // Reset custom background preview
+                                ctx.clearRect(0, 0, customBgPreview.width, customBgPreview.height);
+                                customBgPreview.classList.add('hidden');
+                                customBgPlaceholder.classList.remove('hidden');
+                                downloadCustomBgBtn.classList.add('hidden');
+                                customBgResolution.textContent = '';
+                            };
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Please select an image file.');
+                    }
+                }
+            }
+
+            // Process image with Remove.bg API
+            processBtn.addEventListener('click', processImage);
+
+            async function processImage() {
+                if (!currentFile) return;
+                
+                processBtn.disabled = true;
+                loadingSpinner.classList.remove('hidden');
+                statusText.textContent = 'Uploading high-resolution image...';
+                
+                // Create form data
+                const formData = new FormData();
+                formData.append('image_file', currentFile);
+                formData.append('size', 'auto');
+                
+                try {
+                    // Update progress (simulated for upload)
+                    let progress = 0;
+                    const uploadInterval = setInterval(() => {
+                        progress += 5;
+                        if (progress <= 70) {
+                            progressBar.style.width = `${progress}%`;
+                        }
+                    }, 200);
+                    
+                    // Call Remove.bg API
+                    const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                        method: 'POST',
+                        headers: {
+                            'X-Api-Key': 'Ns4TT5DHLYgT7QfAT7MKdzbX'
+                        },
+                        body: formData
+                    });
+                    
+                    clearInterval(uploadInterval);
+                    progressBar.style.width = '100%';
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.errors ? errorData.errors[0].title : 'Failed to process image');
+                    }
+                    
+                    statusText.textContent = 'Processing complete!';
+                    
+                    // Get processed image as blob
+                    const blob = await response.blob();
+                    processedImageUrl = URL.createObjectURL(blob);
+                    
+                    // Show processed image
+                    processedPreview.src = processedImageUrl;
+                    processedPreview.classList.remove('hidden');
+                    processedPlaceholder.classList.add('hidden');
+                    
+                    // Show resolution info
+                    processedResolution.textContent = `${originalImageWidth} × ${originalImageHeight} pixels`;
+                    processedResolution.classList.add('high-res-indicator');
+                    
+                    // Enable download
+                    downloadTransparentBtn.href = processedImageUrl;
+                    downloadTransparentBtn.classList.remove('hidden');
+                    
+                    // Update custom background preview
+                    updateCustomBackground();
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    statusText.textContent = `Error: ${error.message}`;
+                } finally {
+                    loadingSpinner.classList.add('hidden');
+                }
+            }
+            
+            // Function to update the custom background preview
+            function updateCustomBackground() {
+                if (!processedImageUrl) return;
+                
+                const img = new Image();
+                img.onload = function() {
+                    // Set canvas dimensions to match original image
+                    customBgPreview.width = originalImageWidth;
+                    customBgPreview.height = originalImageHeight;
+                    
+                    // Clear canvas
+                    ctx.clearRect(0, 0, customBgPreview.width, customBgPreview.height);
+                    
+                    // Draw background
+                    if (selectedBackground === 'image' && customBgImage) {
+                        // Draw custom background image (scaled to fit)
+                        ctx.drawImage(customBgImage, 0, 0, customBgPreview.width, customBgPreview.height);
+                    } else if (selectedBackground !== 'transparent') {
+                        // Draw color or gradient background
+                        if (selectedBackground.startsWith('linear-gradient')) {
+                            // For simplicity, we'll use the first color of the gradient
+                            const colorMatch = selectedBackground.match(/#[a-f0-9]{6}/i);
+                            ctx.fillStyle = colorMatch ? colorMatch[0] : '#6e8efb';
+                        } else {
+                            ctx.fillStyle = selectedBackground;
+                        }
+                        ctx.fillRect(0, 0, customBgPreview.width, customBgPreview.height);
+                    }
+                    
+                    // Draw the foreground image (with transparent background)
+                    ctx.drawImage(img, 0, 0, customBgPreview.width, customBgPreview.height);
+                    
+                    // Show the canvas and enable download
+                    customBgPreview.classList.remove('hidden');
+                    customBgPlaceholder.classList.add('hidden');
+                    downloadCustomBgBtn.classList.remove('hidden');
+                    
+                    // Show resolution info
+                    customBgResolution.textContent = `${customBgPreview.width} × ${customBgPreview.height} pixels`;
+                    customBgResolution.classList.add('high-res-indicator');
+                    
+                    // Update download link
+                    customBgPreview.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        downloadCustomBgBtn.href = url;
+                    }, 'image/png', 1.0); // Maximum quality
+                };
+                img.src = processedImageUrl;
+            }
+        });
+    </script>
+</body>
+</html>
